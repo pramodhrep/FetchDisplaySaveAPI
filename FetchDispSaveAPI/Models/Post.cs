@@ -1,4 +1,6 @@
 ﻿using System;
+using SQLite;
+
 namespace FetchDispSaveAPI.Models
 {
     public class Post
@@ -9,6 +11,7 @@ namespace FetchDispSaveAPI.Models
         public string title { get; set; }
         public string body { get; set; } */
 
+        [PrimaryKey, AutoIncrement]
         public int albumId { get; set; }
         public int id { get; set; }
         public string title { get; set; }

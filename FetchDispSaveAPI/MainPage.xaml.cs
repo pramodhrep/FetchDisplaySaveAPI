@@ -8,7 +8,8 @@ using Xamarin.Forms;
 using System.Net.Http;
 using Newtonsoft.Json;
 using FetchDispSaveAPI.Models;
-
+using System.IO;
+using SQLite;
 
 namespace FetchDispSaveAPI
 {
@@ -20,6 +21,7 @@ namespace FetchDispSaveAPI
         //private const string url = "https://jsonplaceholder.typicode.com/posts";
         private const string url = "https://jsonplaceholder.typicode.com/photos";
         private HttpClient _Client = new HttpClient();
+
         public MainPage()
         {
             InitializeComponent();
@@ -33,6 +35,47 @@ namespace FetchDispSaveAPI
             //Assigning the ObservableCollection to MyListView in the XAML of this file
             Post_List.ItemsSource = posts;
             base.OnAppearing();
+
+            //Post_List.ItemSelected += Post_List_ItemSelected; 
         }
+
+        private void Post_List_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            Post post = (Post)e.SelectedItem;
+
+            if (e.SelectedItem != null)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(App.DBPath))
+                {
+                    conn.CreateTable<Post>();
+                    int itemsInserted = conn.Insert(post);
+
+                    if (itemsInserted > 0)
+                    {
+                        DisplayAlert("Done", "Post saved", "Ok");
+                    }
+                    else
+                    {
+                        DisplayAlert("Error", "Error in saving post", "Ok");
+                    }
+                }
+
+            }
+        }
+
+        private void Saved_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new SavedPosts());
+        }
+
+        private void Clean_Clicked(object sender, EventArgs e)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(App.DBPath))
+            {
+                conn.DeleteAll<Post>();
+            }
+            DisplayAlert("Done", "All Saved Posts are Now Empty", "Ok");
+        }
+
     }
 }

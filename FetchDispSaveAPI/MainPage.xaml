@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:FetchDispSaveAPI" x:Class="FetchDispSaveAPI.MainPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Clean" Clicked="Clean_Clicked"/>
+        <ToolbarItem Text="Saved" Clicked="Saved_Clicked"/>
+    </ContentPage.ToolbarItems>
     <StackLayout>
-        <ListView x:Name="Post_List">
+        <ListView x:Name="Post_List" ItemSelected="Post_List_ItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <!--<TextCell Text="{Binding title}" Detail="{Binding body}">

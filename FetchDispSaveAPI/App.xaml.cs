@@ -6,11 +6,14 @@ namespace FetchDispSaveAPI
 {
     public partial class App : Application
     {
-        public App()
+        public static string DBPath = string.Empty;
+
+        public App(String dbPath)
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage());
+            DBPath = dbPath;
         }
 
         protected override void OnStart()
