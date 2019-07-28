@@ -18,7 +18,6 @@ namespace FetchDispSaveAPI
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
-        //private const string url = "https://jsonplaceholder.typicode.com/posts";
         private const string url = "https://jsonplaceholder.typicode.com/photos";
         private HttpClient _Client = new HttpClient();
 
@@ -26,6 +25,7 @@ namespace FetchDispSaveAPI
         {
             InitializeComponent();
         }
+
         protected override async void OnAppearing()
         {
             //Sends a GET request to the specified Uri and returns the response body as a string in an asynchronous operation
@@ -34,9 +34,9 @@ namespace FetchDispSaveAPI
             List<Post> posts = JsonConvert.DeserializeObject<List<Post>>(content);
             //Assigning the ObservableCollection to MyListView in the XAML of this file
             Post_List.ItemsSource = posts;
+
             base.OnAppearing();
 
-            //Post_List.ItemSelected += Post_List_ItemSelected; 
         }
 
         private void Post_List_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -48,15 +48,15 @@ namespace FetchDispSaveAPI
                 using (SQLiteConnection conn = new SQLiteConnection(App.DBPath))
                 {
                     conn.CreateTable<Post>();
-                    int itemsInserted = conn.Insert(post);
+                    int postInserted = conn.Insert(post);
 
-                    if (itemsInserted > 0)
+                    if (postInserted > 0)
                     {
-                        DisplayAlert("Done", "Post saved", "Ok");
+                        DisplayAlert("Success", "Post Saved!!!", "Ok");
                     }
                     else
                     {
-                        DisplayAlert("Error", "Error in saving post", "Ok");
+                        DisplayAlert("Error", "Error in Saving Selected Post", "Try Again!");
                     }
                 }
 
@@ -74,8 +74,7 @@ namespace FetchDispSaveAPI
             {
                 conn.DeleteAll<Post>();
             }
-            DisplayAlert("Done", "All Saved Posts are Now Empty", "Ok");
+            DisplayAlert("Success", "All Saved Posts are Now Empty", "Ok");
         }
-
     }
 }

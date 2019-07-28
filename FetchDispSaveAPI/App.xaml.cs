@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,7 +13,8 @@ namespace FetchDispSaveAPI
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage());
+            //MainPage = new NavigationPage(new MainPage());
+            CheckInternet();
             DBPath = dbPath;
         }
 
@@ -29,6 +31,21 @@ namespace FetchDispSaveAPI
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+        public void CheckInternet()
+        {
+            var current = Connectivity.NetworkAccess;
+            
+            if (current == NetworkAccess.Internet)
+            {
+                // Connection to internet is available
+                MainPage = new NavigationPage(new MainPage());
+            }
+            else
+            {
+                // Connection to internet is not available
+                MainPage = new NavigationPage(new SavedPosts());
+            }
         }
     }
 }
